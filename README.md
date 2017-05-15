@@ -484,7 +484,9 @@ Instalar Test - App Usando el Siguiente Script
 ```
 
 ## Opcional Instalar el DC/OS CLI
+
 Conectarse al master e instalar el DC/OS CLI
+
 ssh <azure-user>@<fqdn-name>mgmt.eastus.cloudapp.azure.com -i <path-to-rsa-private-key>
 
 ```
