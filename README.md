@@ -29,7 +29,37 @@ Plantilla ARM para el Deployment de Docker usando como orchestrator a DC/OS
 [Repositorio Git](https://github.com/Azure/azure-quickstart-templates/tree/master/101-acs-dcos)
 
 
-### Plantilla Parámeters
+### Plantilla Parámetros
+'''
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dnsNamePrefix": {
+      "value": "GEN-UNIQUE"
+    },
+    "agentCount": {
+      "value": 1
+    },
+    "agentVMSize": {
+      "value": "Standard_A2"
+    },
+    "linuxAdminUsername": {
+      "value": "azureuser"
+    },
+    "orchestratorType": {
+      "value": "DCOS"
+    },
+    "masterCount": {
+      "value": 3
+    },
+    "sshRSAPublicKey": {
+      "value": "GEN-SSH-PUB-KEY"
+    }
+  }
+}
+```
+
 ### Plantilla Recursos
 ### Laboratiorio, hacer el deployment
 ### Conectarse al Servicio
