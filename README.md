@@ -62,7 +62,7 @@ Plantilla ARM para el Deployment de Docker usando como orchestrator a DC/OS
 
 ### Plantilla Recursos
 
-```(https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-acs-dcos/azuredeploy.json)
+"```(https://github.com/Azure/azure-quickstart-templates/blob/master/101-acs-dcos/azuredeploy.json)
 
 ### Laboratiorio, hacer el deployment
 ### Conectarse al Servicio
