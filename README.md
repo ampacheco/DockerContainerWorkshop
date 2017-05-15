@@ -22,9 +22,9 @@
 
 ### Plantillas ARM para deployment de Docker usando DC/OS
 
-[arbitrary case-insensitive reference text]: https://www.mozilla.org
-[1]: http://slashdot.org
-[link text itself]: http://www.reddit.com
+Plantilla ARM para el Deployment de Docker usando como orchestrator a DC/OS
+
+[Descripción Detallada de la Plantilla] : See https://docs.microsoft.com/en-us/azure/container-service/container-service-mesos-marathon-ui.
 
 ## Deployments de Plantiallas ARM mediante el Portal
 
