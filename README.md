@@ -219,5 +219,22 @@ Plantilla ARM para el Deployment de Docker usando como orchestrator a DC/OS
 
 ## Deployments de Plantillas ARM, mediante Powershell
 
+```
+# Autneticarse a la Cuenta
+Login-AzureRmAccount
+
+# Crear Grupo de Recurso
+New-AzureRmResourceGroup 
+  -Name ExampleResourceGroup 
+  -Location "EastUS"
+
+# Hacer el Deployment del Recuros
+New-AzureRmResourceGroupDeployment 
+  -Name ExampleDeployment 
+  -ResourceGroupName ExampleResourceGroup `
+  -TemplateFile c:\MyTemplates\storage.json 
+  -storageAccountType Standard_GRS
+
+```
 ## Deployments de Plantillas ARM mediante Azure CLI 2.0
 
