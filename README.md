@@ -482,5 +482,7 @@ Instalar Test - App Usando el Siguiente Script
   "requirePorts": true
 }
 ```
+## Opcional Instalar el DC/OS CLI
+
 
 
