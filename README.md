@@ -246,5 +246,241 @@ az group deployment create --name $deploymentName --resource-group $resourceGrou
 
 ```
 
+## Conectarse al clúster DC/OS
+ssh -fNL 8080:localhost:80 -p 2200 <azure-user>@<fqdn-name>mgmt.eastus.cloudapp.azure.com -i <path-to-rsa-private-key>
+
+## Instalar dcos CLI
+
+## Instalar Kong API Management
+
+### Instalar Marathon-lb
+
+Instlar Marathon usando Servicios
+
+### Instalar postgres
+
+Instalar Postgres usando el siguiente script
+```
+{
+  "id": "/postgres",
+  "instances": 1,
+  "cpus": 1,
+  "mem": 1024,
+  "disk": 0,
+  "gpus": 0,
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "pgdata",
+        "mode": "RW",
+        "persistent": {
+          "size": 100,
+          "type": "root"
+        }
+      }
+    ],
+    "docker": {
+      "image": "postgres:9.5",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 5432,
+          "hostPort": 0,
+          "servicePort": 10101,
+          "protocol": "tcp",
+          "name": "psql",
+          "labels": {
+            "VIP_0": "postgres:5432"
+          }
+        }
+      ],
+      "privileged": false,
+      "forcePullImage": false
+    }
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "delaySeconds": 15,
+      "command": {
+        "value": "/bin/bash -c \\\"</dev/tcp/$HOST/$PORT0\\\""
+      },
+      "protocol": "COMMAND"
+    }
+  ],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0,
+    "maximumOverCapacity": 0
+  },
+  "residency": {
+    "relaunchEscalationTimeoutSeconds": 3600,
+    "taskLostBehavior": "WAIT_FOREVER"
+  },
+  "killSelection": "YOUNGEST_FIRST",
+  "requirePorts": true,
+  "env": {
+    "POSTGRES_DB": "kong",
+    "POSTGRES_PASSWORD": "kong",
+    "POSTGRES_USER": "kong",
+    "PGDATA": "/mnt/mesos/sandbox/pgdata"
+  }
+}
+```
+### Instalar kong
+Instalar Kong Usando el siguiente script
+```
+{
+  "id": "/kong",
+  "cmd": "KONG_NGINX_DAEMON=\"off\" KONG_CLUSTER_ADVERTISE=$HOST:$PORT3  kong start",
+  "instances": 1,
+  "cpus": 1,
+  "mem": 512,
+  "disk": 0,
+  "gpus": 0,
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "kong",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "hostPort": 0,
+          "servicePort": 10001,
+          "protocol": "tcp",
+          "name": "proxy"
+        },
+        {
+          "containerPort": 8001,
+          "hostPort": 0,
+          "servicePort": 10002,
+          "protocol": "tcp",
+          "name": "admin"
+        },
+        {
+          "containerPort": 8443,
+          "hostPort": 0,
+          "servicePort": 10003,
+          "protocol": "tcp",
+          "name": "ssl"
+        },
+        {
+          "containerPort": 7946,
+          "hostPort": 0,
+          "servicePort": 10004,
+          "protocol": "udp,tcp",
+          "name": "serf"
+        }
+      ],
+      "privileged": false,
+      "forcePullImage": true
+    }
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "portIndex": 1,
+      "path": "/",
+      "protocol": "MESOS_HTTP",
+      "delaySeconds": 15
+    }
+  ],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  },
+  "unreachableStrategy": {
+    "inactiveAfterSeconds": 300,
+    "expungeAfterSeconds": 600
+  },
+  "killSelection": "YOUNGEST_FIRST",
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "requirePorts": true,
+  "labels": {
+    "HAPROXY_1_GROUP": "external",
+    "HAPROXY_0_GROUP": "external"
+  },
+  "env": {
+    "KONG_PG_HOST": "postgres.marathon.l4lb.thisdcos.directory",
+    "KONG_PG_USER": "kong",
+    "KONG_PG_PASSWORD": "kong",
+    "KONG_DATABASE": "postgres"
+  }
+}
+```
+### Instalar APP
+
+Instalar Test - App Usando el Siguiente Script
+
+```
+{
+  "id": "/myapp",
+  "instances": 1,
+  "cpus": 1,
+  "mem": 1024,
+  "disk": 0,
+  "gpus": 0,
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "mashape/node-web-app",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 0,
+          "protocol": "tcp",
+          "name": "http",
+          "labels": {
+            "VIP_0": "/myapp:8080"
+          }
+        }
+      ],
+      "privileged": false,
+      "forcePullImage": false
+    }
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "portIndex": 0,
+      "path": "/",
+      "protocol": "MESOS_HTTP",
+      "delaySeconds": 15
+    }
+  ],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  },
+  "unreachableStrategy": {
+    "inactiveAfterSeconds": 300,
+    "expungeAfterSeconds": 600
+  },
+  "killSelection": "YOUNGEST_FIRST",
+  "requirePorts": true
+}
+```
 
 
