@@ -238,3 +238,13 @@ New-AzureRmResourceGroupDeployment
 ```
 ## Deployments de Plantillas ARM mediante Azure CLI 2.0
 
+```
+az login
+az account set --name $subscriptionId
+az group create --name $resourceGroupName --location $resourceGroupLocation
+az group deployment create --name $deploymentName --resource-group $resourceGroupName --template-file $templateFilePath --parameters $parametersFilePath
+
+```
+
+
+
