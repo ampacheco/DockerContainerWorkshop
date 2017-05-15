@@ -24,7 +24,7 @@
 
 Plantilla ARM para el Deployment de Docker usando como orchestrator a DC/OS
 
-[Descripción Detallada de la Plantilla] : See https://docs.microsoft.com/en-us/azure/container-service/container-service-mesos-marathon-ui.
+[Descripción Detallada de la Plantilla] : https://docs.microsoft.com/en-us/azure/container-service/container-service-mesos-marathon-ui.
 
 ## Deployments de Plantiallas ARM mediante el Portal
 
