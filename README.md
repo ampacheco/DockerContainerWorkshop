@@ -20,7 +20,11 @@
 }
 ```
 
-### Plantillas ARM para deployment de Docker usando SWAR
+### Plantillas ARM para deployment de Docker usando DC/OS
+
+[arbitrary case-insensitive reference text]: https://www.mozilla.org
+[1]: http://slashdot.org
+[link text itself]: http://www.reddit.com
 
 ## Deployments de Plantiallas ARM mediante el Portal
 
