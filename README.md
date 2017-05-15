@@ -30,7 +30,7 @@ Plantilla ARM para el Deployment de Docker usando como orchestrator a DC/OS
 
 
 ### Plantilla Parámetros
-'''
+```
 {
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
